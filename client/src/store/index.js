@@ -163,6 +163,29 @@ export const useGlobalStore = () => {
         asyncLoadIdNamePairs();
     }
 
+    store.createList = function () {
+        async function createList() {
+            let newList = {
+                "name": "Untitled", 
+                "items": ["?", "?", "?", "?", "?"]
+            };
+            const response = await api.createTop5List(newList);
+            if(response.data.success) {
+                let top5List = response.data.top5List;
+                storeReducer({
+                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                    payload: top5List
+                });
+                store.history.push("/top5list/" + top5List._id);
+            }
+            else {
+                console.log("Upload Failed");
+            }
+        }
+        createList();
+        
+    }
+
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
     // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE
     // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,

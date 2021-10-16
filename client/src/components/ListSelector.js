@@ -26,6 +26,9 @@ const ListSelector = () => {
             />
         ))
     }
+    function handleCreateList() {
+        store.createList();
+    }
     return (
         <div id="top5-list-selector">
             <div id="list-selector-heading">
@@ -33,7 +36,8 @@ const ListSelector = () => {
                     type="button"
                     id="add-list-button"
                     className="top5-button"
-                    value="+" />
+                    value="+"
+                    onClick = {handleCreateList} />
                 Your Lists
             </div>
             <div id="list-selector-list">
