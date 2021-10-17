@@ -11,9 +11,9 @@ import DeleteModal from './DeleteModal'
 const ListSelector = () => {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
-
     useEffect(() => {
         store.loadIdNamePairs();
+        // eslint-disable-next-line
     }, []);
 
     let listCard = "";
@@ -26,6 +26,7 @@ const ListSelector = () => {
             />
         ))
     }
+    
     function handleCreateList() {
         store.createList();
     }
