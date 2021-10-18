@@ -61,7 +61,9 @@ function Top5Item(props) {
         }
     }
     function handleBlur() {
-        store.addUpdateItemTransaction(props.index, props.text, text);
+        if(props.text !== text && text !== "") {
+            store.addUpdateItemTransaction(props.index, props.text, text);
+        }
         toggleEdit();
     }
     function handleUpdateText(event) {
