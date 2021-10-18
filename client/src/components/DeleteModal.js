@@ -15,10 +15,10 @@ export function DeleteModal() {
     if (store.currentList) {
         name = store.currentList.name;
     }
-    function handleDeleteList(event) {
-        store.deleteMarkedList();
+    function handleDeleteList() {
+        store.deleteMarkedList(store.currentList);
     }
-    function handleCloseModal(event) {
+    function handleCloseModal() {
         store.hideDeleteListModal();
     }
     if(store.currentList) {
