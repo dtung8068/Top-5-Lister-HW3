@@ -20,7 +20,8 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     SET_ITEM_NAME_EDIT_ACTIVE: "SET_ITEM_NAME_EDIT_ACTIVE",
-    DELETE_LIST: "DELETE_LIST"
+    DELETE_LIST: "DELETE_LIST",
+    AFTER_DELETE: "AFTER_DELETE"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -59,6 +60,16 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
                     idNamePairs: store.idNamePairs,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                })
+            }
+            case GlobalStoreActionType.AFTER_DELETE: {
+                return setStore({
+                    idNamePairs: payload.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -208,6 +219,39 @@ export const useGlobalStore = () => {
         createList();
         
     }
+    store.hideDeleteListModal = function () {
+        store.closeCurrentList();
+    }
+    store.deleteMarkedList = function (list) {
+        async function deleteList(list) {
+            const response = await api.deleteTop5ListById(list._id);
+            if(response.data.success) {
+                try {
+                    const response = await api.getTop5ListPairs(); //Update List Pairs
+                    if(response.data.success) {
+                        let pairsArray = response.data.idNamePairs;
+                        storeReducer({
+                            type: GlobalStoreActionType.AFTER_DELETE,
+                            payload: {
+                                idNamePairs: pairsArray,
+                            }
+                        });
+                    }                    
+                }
+                catch (err) {
+                    storeReducer({
+                        type: GlobalStoreActionType.AFTER_DELETE,
+                        payload: {
+                            idNamePairs: []
+                        }
+                    });
+                }
+
+            }
+            
+    }
+    deleteList(list);
+}
 
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
     // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE
@@ -282,6 +326,8 @@ export const useGlobalStore = () => {
     store.redo = function () {
         tps.doTransaction();
     }
+    
+
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
     store.setIsListNameEditActive = function () {

@@ -11,7 +11,6 @@ import { GlobalStoreContext } from '../store'
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [ editActive, setEditActive ] = useState(false);
-    const [ deleteActive, setDeleteActive ] = useState(false);
     const [ text, setText ] = useState("");
     store.history = useHistory();
     const { idNamePair, selected } = props;
@@ -53,11 +52,7 @@ function ListCard(props) {
     }
     function handleDeleteList(event) {
         event.stopPropagation();
-        let newActive = !deleteActive;
-        if (newActive) {
-            store.setIsDeleteActive(idNamePair._id);
-        }
-        setDeleteActive(newActive);
+        store.setIsDeleteActive(idNamePair._id);
     }
 
     let selectClass = "unselected-list-card";
