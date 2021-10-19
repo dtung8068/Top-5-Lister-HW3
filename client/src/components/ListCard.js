@@ -102,7 +102,6 @@ function ListCard(props) {
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}
-                autoFocus
             />;
     }
     return (

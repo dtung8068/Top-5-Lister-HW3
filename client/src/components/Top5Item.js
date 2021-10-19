@@ -84,11 +84,16 @@ function Top5Item(props) {
                 onChange={handleUpdateText}
                 onBlur={handleBlur}
                 defaultValue={props.text}
-                autoFocus
             />         
         )
     }
     else {
+        let editItemClass = "list-card-button";
+        let disabled = false;
+        if (store.isItemEditActive) {
+            editItemClass = "list-card-button-disabled"
+            disabled = true;
+        }
         return (
             <div
                 id={'item-' + (index + 1)}
@@ -103,8 +108,9 @@ function Top5Item(props) {
                 <input
                     type="button"
                     id={"edit-item-" + index + 1}
-                    className="list-card-button"
+                    className={editItemClass}
                     onClick = {handleToggleEdit}
+                    disabled = {disabled}
                     value={"\u270E"}
                 />
                 {props.text}

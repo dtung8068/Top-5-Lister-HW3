@@ -11,7 +11,6 @@ import { GlobalStoreContext } from '../store'
 function Workspace() {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
-
     let editItems = "";
     if (store.currentList) {
         editItems = 

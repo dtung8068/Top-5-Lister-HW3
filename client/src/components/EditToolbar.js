@@ -14,13 +14,13 @@ function EditToolbar() {
     let undoButtonClass = "top5-button-disabled";
     let redoButtonClass = "top5-button-disabled";
     let closeButtonClass = "top5-button-disabled";
-    if(store.hasUndo()) {
+    if(store.hasUndo() && !store.isItemEditActive) {
         undoButtonClass = "top5-button";
     }
-    if(store.hasRedo()) {
+    if(store.hasRedo() && !store.isItemEditActive) {
         redoButtonClass = "top5-button";
     }
-    if(store.currentList) {
+    if(store.currentList && !store.isItemEditActive) {
         closeButtonClass = "top5-button";
     }
     function handleUndo() {
