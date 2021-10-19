@@ -200,8 +200,10 @@ export const useGlobalStore = () => {
 
     store.createList = function () {
         async function createList() {
+            let name = "Untitled" + store.newListCounter;
+            store.newListCounter++;
             let newList = {
-                "name": "Untitled", 
+                "name": name,
                 "items": ["?", "?", "?", "?", "?"]
             };
             const response = await api.createTop5List(newList);
