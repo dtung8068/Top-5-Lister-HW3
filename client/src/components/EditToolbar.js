@@ -10,51 +10,60 @@ import { useHistory } from 'react-router-dom'
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
     const history = useHistory();
+    function handleUndo() {
+        if(!store.isItemEditActive) {
+            store.undo();
+        }
 
+    }
+    function handleRedo() {
+        if(!store.isItemEditActive) {
+            store.redo();
+        }
+
+    }
+    function handleClose() {
+        if(!store.isItemEditActive) {
+            history.push("/");
+            store.closeCurrentList();
+        }
+    }
     let undoButtonClass = "top5-button-disabled";
     let redoButtonClass = "top5-button-disabled";
     let closeButtonClass = "top5-button-disabled";
+    let editStatusUndo = true;
+    let editStatusRedo = true;
+    let editStatusClose = true;
     if(store.hasUndo() && !store.isItemEditActive) {
         undoButtonClass = "top5-button";
+        editStatusUndo = false;
     }
     if(store.hasRedo() && !store.isItemEditActive) {
         redoButtonClass = "top5-button";
+        editStatusRedo = false;
     }
     if(store.currentList && !store.isItemEditActive) {
         closeButtonClass = "top5-button";
-    }
-    function handleUndo() {
-        store.undo();
-    }
-    function handleRedo() {
-        store.redo();
-    }
-    function handleClose() {
-        history.push("/");
-        store.closeCurrentList();
-    }
-    let editStatus = false;
-    if (store.isListNameEditActive) {
-        editStatus = true;
+        editStatusClose = false;
     }
     return (
         <div id="edit-toolbar">
             <div
-                disabled={editStatus}
+                disabled={editStatusUndo}
                 id='undo-button'
                 onClick={handleUndo}
                 className={undoButtonClass}>
                 &#x21B6;
             </div>
             <div
-                disabled={editStatus}
+                disabled={editStatusRedo}
                 id='redo-button'
                 onClick={handleRedo}
                 className={redoButtonClass}>
                 &#x21B7;
             </div>
             <div
-                disabled={editStatus}
+                disabled={editStatusClose}
                 id='close-button'
                 onClick={handleClose}
                 className={closeButtonClass}>

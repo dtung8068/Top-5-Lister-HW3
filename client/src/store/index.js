@@ -350,6 +350,12 @@ export const useGlobalStore = () => {
             type: GlobalStoreActionType.SET_ITEM_NAME_EDIT_ACTIVE,
         });
     }
+    store.setCurrentListReducer = function () {
+        storeReducer({
+            type: GlobalStoreActionType.SET_CURRENT_LIST,
+            payload: store.currentList
+        });
+    }
     store.setIsDeleteActive = function (id) {
         async function setIsDeleteActive(id) {
             let response = await api.getTop5ListById(id);

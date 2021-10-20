@@ -64,6 +64,9 @@ function Top5Item(props) {
         if(props.text !== text && text !== "") {
             store.addUpdateItemTransaction(props.index, props.text, text);
         }
+        else {
+            store.setCurrentListReducer();
+        }
         toggleEdit();
     }
     function handleUpdateText(event) {
